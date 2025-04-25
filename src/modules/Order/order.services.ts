@@ -13,13 +13,14 @@ import { IUser, TUser } from "../User/user.interface";
 
 const createOrderIntoDB = async (
     customer:IUser,
-    payload: { meal: string; dietary?: string[] }
+    payload: { meal: string; dietaryPreference?: string[] }
   ) => {
     // Validate payload
-    if (!payload?.meal) {
-      throw new AppError(httpStatus.NOT_ACCEPTABLE, 'Meal must be specified');
-    }
+    // if (!payload?.meal) {
+    //   throw new AppError(httpStatus.NOT_ACCEPTABLE, 'Meal must be specified');
+    // }
   console.log("user=>",customer);
+  console.log("payload=>",payload);
     // Fetch the customer from DB
     const userData = await UserModel.findById(customer.userId);
     if (!userData) {
@@ -29,11 +30,11 @@ const createOrderIntoDB = async (
     // Create order
     const order = await OrderModel.create({
       meal: payload.meal,
-      dietary: payload.dietary || [],
+      dietary: payload.dietaryPreference || [],
       customerId: userData._id,
       status: 'pending',
     });
-  
+  console.log(order);
     return order;
   };
 
